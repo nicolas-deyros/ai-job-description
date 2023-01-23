@@ -1,3 +1,3 @@
-# Creating a resume builder app in React Native
+# Job Description Generator with NextJS and ChatGPT
 
-Follow https://blog.logrocket.com/creating-resume-builder-app-react-native/
+Follow https://www.freecodecamp.org/news/build-a-job-description-generator-with-nextjs-and-chatgpt/

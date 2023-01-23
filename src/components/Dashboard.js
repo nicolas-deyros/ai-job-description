@@ -12,42 +12,35 @@ export default function Dashboard() {
 	const [isGenerating, setIsGenerating] = useState(false)
 	const [isCopied, setIsCopied] = useState(false)
 
-	const handleSubmit = async (e) => {
-		try {
-			e.preventDefault()
-			setIsGenerating(true)
-			setIsLoading(true)
-			const res = await fetch('/api/returnJobDescription', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					jobTitle,
-					industry,
-					keyWords,
-					tone,
-					numWords,
-				}),
-			})
-			setIsGenerating(false)
-			setIsLoading(false)
-			const data = await res.json()
-			setJobDescription(data.jobDescription.trim())
-		} catch (error) {
-			setErrorMessage('Unable to fetch user list')
-			setIsLoading(false)
-		}
-	}
-
 	const handleCopy = () => {
 		navigator.clipboard.writeText(jobDescription)
 		setIsCopied(true)
 	}
 
+	const handleSubmit = async (e) => {
+		e.preventDefault()
+		setIsGenerating(true)
+		const res = await fetch('/api/returnJobDescription', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				jobTitle,
+				industry,
+				keyWords,
+				tone,
+				numWords,
+			}),
+		})
+		setIsGenerating(false)
+		const data = await res.json()
+		setJobDescription(data.jobDescription.trim())
+	}
+
 	return (
 		<div className='max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12'>
-			<div className='grid gap-y-12 md:grid-cols-2 md:gap-x-12 '>
+			<div className='grid gap-y-12 grid-cols-1 md:gap-x-12 '>
 				<div className=''>
 					<form onSubmit={(e) => handleSubmit(e)}>
 						<div className='flex flex-col'>
@@ -141,10 +134,10 @@ export default function Dashboard() {
 							Output
 						</label>
 						<textarea
-							rows={jobDescription === '' ? 7 : jobDescription.split('\\n').length + 12}
+							rows={jobDescription === '' ? 7 : jobDescription.split('\n').length + 12}
 							name='output'
-							onChange={(e) => setJobDescription(e.target.value)}
 							value={jobDescription}
+							onChange={(e) => setJobDescription(e.target.value)}
 							disabled={jobDescription === ''}
 							id='output'
 							placeholder='AI Generated Job Description'
